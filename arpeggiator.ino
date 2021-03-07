@@ -4,21 +4,39 @@
 arp a(C, 5, 2, 6, 200, c_harmonic, 0);
 bool button_pressed;
 int ButtonVal;
+//int LastButtonVal;
+int ButtonClicks;
 
-#define baseNotepin 1
-#define baseOctavepin 5
-#define octaveShiftpin 0
-#define stepspin 4
-#define indelaypin 3
-#define orderpin 7
-#define modepin 6
-#define syncinpin 3
+// A6 = baseNotepin       ROOT
+// A5 = baseOctavepin     TONIC      
+// A4 = octaveShiftpin    PROGR.
+// A3 = modepin           MODE     broken
+// A2 = indelaypin        TEMPO
+// A1 = orderpin          ORDER
+// A0 = stepspin          STEPS
 
-#define LEDPin 13
+
+#define baseNotepin 6     // 
+#define baseOctavepin 5   // 
+#define octaveShiftpin 4  // 
+#define modepin 7         //      broken, pin 7 temp.
+#define indelaypin 2      // 
+#define orderpin 1        // 
+#define stepspin 0        //
+
+// D6 = btn 1 - ButtonVal 7
+// D7 = btn 2 - ButtonVal 6
+// D8 = btn 3 - ButtonVal 5
+// D9 = btn 4 - ButtonVal 4
+// D10 = btn 5 - ButtonVal 3
+// D11 = btn 6 - ButtonVal 2
+// D12 = btn 7 - ButtonVal 1
+
+#define LEDPin 5
 
 // Synchronization: choose one of two possible options:
-#define EXT_SYNC
-//#define INT_SYNC
+//#define EXT_SYNC // korg synx
+#define INT_SYNC // pot tempo
 
 void readPoties()
 {
@@ -27,7 +45,32 @@ void readPoties()
   
   // In my setup the buttons are connected to pins 6..12
   for (i=12;i>5;i--)
-    if (!(digitalRead(i))) { button_pressed = true; ButtonVal = 13-i; return; }
+    if (!(digitalRead(i))) { 
+      button_pressed = true; ButtonVal = 13-i;
+      if (ButtonVal == 1) {
+        ButtonVal = 7;
+        ButtonClicks = (ButtonClicks+1);
+      } else if (ButtonVal == 2) {
+        ButtonVal = 6;
+        ButtonClicks = 0;
+      } else if (ButtonVal == 3) {
+        ButtonVal = 5;
+        ButtonClicks = 0;
+      } else if (ButtonVal == 4) {
+        ButtonVal = 4;
+        ButtonClicks = 0;
+      } else if (ButtonVal == 5) {
+        ButtonVal = 3;
+        ButtonClicks = 0;
+      } else if (ButtonVal == 6) {
+        ButtonVal = 2;
+        ButtonClicks = 0;
+      } else if (ButtonVal == 7) {
+        ButtonVal = 1;
+        ButtonClicks = 0;
+      }
+      return;
+      }
 }
 
 void setup()
@@ -48,6 +91,8 @@ void setup()
   }
   button_pressed = false;
   ButtonVal = 1;
+  //LastButtonVal = 0;
+  ButtonClicks = 0;
 }
 
 void loop()
@@ -55,13 +100,17 @@ void loop()
     if (button_pressed)
     {
       a.setProgression(ButtonVal-1);
-      button_pressed = false;
+
+     if((ButtonVal == 7) && (ButtonClicks > 2)){
+         button_pressed = false;
+         ButtonClicks = 0;
+         //LastButtonVal = 0;
+      }
       
-      // Switch on LED
       digitalWrite(LEDPin, HIGH);
       a.play();
       
-      // Switch off LED
       digitalWrite(LEDPin, LOW);
     }
+    
 }

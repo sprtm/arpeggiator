@@ -1,6 +1,9 @@
 #include "engine.h"
 MIDI_CREATE_DEFAULT_INSTANCE();
 
+extern int ButtonVal;
+//extern int LastButtonVal;
+
 // C Ionian     { C maj;  D min;  E min;  F maj;  G maj;  A min;  B dim  }
 const chord ionian[7]     = {{0, maj},    {2, minor}, {4, minor}, {5, maj},   {7, maj},   {9, minor}, {11, dim}};
 
@@ -42,6 +45,14 @@ void shuffle(int *array, size_t n)
         }
     }
 }
+
+//(bn) = baseNote
+//(bo) = baseOctave
+//(os) = octaveShift
+//(st) = steps
+//(d) = indelay
+//(p) = progression
+
 
 void arp::setupArp(short bn, short bo, short os, unsigned short st, unsigned int d, int m, unsigned imode)
 {
@@ -142,22 +153,24 @@ void arp::play()
         //Serial.print(notestoplay[i]); Serial.print("\r\n");
         MIDI.sendNoteOn(notestoplay[i], 127, 1);
 
-        #ifdef INT_SYNC
+        //#ifdef INT_SYNC
         // Delay value from poti
         delay(indelay);
-        #endif
+        //delay(500);
+        //#endif
 
-        #ifdef EXT_SYNC
+        //#ifdef EXT_SYNC
         // Wait for click from sync in
-        while ((digitalRead(syncinpin) == 0));
-        delay(65);
-        #endif
+        //while ((digitalRead(syncinpin) == 0));
+        //delay(65);
+        //#endif
         // Stop note
         MIDI.sendNoteOff(notestoplay[i], 0, 1);     // Stop the note
     }
 
     //Stop base note
     MIDI.sendNoteOff(bn, 0, 1);
+    //LastButtonVal = ButtonVal;
 }
 
 arp::arp(notes bn, short bo, short os, unsigned short st, unsigned int d, unsigned m, unsigned int p) : baseNote(bn), baseOctave(bo), octaveShift(os), steps(st), indelay(d), progression(p)
@@ -175,6 +188,7 @@ arp::arp()
     steps = 6;
     indelay = 200;
     progression = 0;
+    //mode = ionian;
     mode = ionian;
 }
  void arp::midibegin()
