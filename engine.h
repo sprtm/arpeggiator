@@ -1,5 +1,4 @@
 #include <MIDI.h>
-//typedef enum {B, AD, A, GD, G, FD, F, E, DD, D, CD, C} notes;
 typedef enum {C, CD, D, DD, E, F, FD, G, GD, A, AD, B} notes;
 typedef enum {maj, minor, dim, aug} chord_types;
 

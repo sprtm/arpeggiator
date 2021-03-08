@@ -24,14 +24,6 @@ int ButtonClicks;
 #define orderpin 1        // 
 #define stepspin 0        //
 
-// D6 = btn 1 - ButtonVal 7
-// D7 = btn 2 - ButtonVal 6
-// D8 = btn 3 - ButtonVal 5
-// D9 = btn 4 - ButtonVal 4
-// D10 = btn 5 - ButtonVal 3
-// D11 = btn 6 - ButtonVal 2
-// D12 = btn 7 - ButtonVal 1
-
 #define LEDPin 5
 
 // Synchronization: choose one of two possible options:
@@ -47,7 +39,7 @@ void readPoties()
   for (i=12;i>5;i--)
     if (!(digitalRead(i))) { 
       button_pressed = true; ButtonVal = 13-i;
-      if (ButtonVal == 1) {
+      if (ButtonVal == 1) { // reverse button order
         ButtonVal = 7;
         ButtonClicks = (ButtonClicks+1);
       } else if (ButtonVal == 2) {

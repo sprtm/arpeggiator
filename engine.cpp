@@ -1,8 +1,8 @@
 #include "engine.h"
 MIDI_CREATE_DEFAULT_INSTANCE();
 
-extern int ButtonVal;
-//extern int LastButtonVal;
+// extern int ButtonVal;
+// extern int LastButtonVal;
 
 // C Ionian     { C maj;  D min;  E min;  F maj;  G maj;  A min;  B dim  }
 const chord ionian[7]     = {{0, maj},    {2, minor}, {4, minor}, {5, maj},   {7, maj},   {9, minor}, {11, dim}};
@@ -156,14 +156,16 @@ void arp::play()
         //#ifdef INT_SYNC
         // Delay value from poti
         delay(indelay);
-        //delay(500);
         //#endif
+
+        //delay(250); // 120 bpm
 
         //#ifdef EXT_SYNC
         // Wait for click from sync in
         //while ((digitalRead(syncinpin) == 0));
         //delay(65);
         //#endif
+        
         // Stop note
         MIDI.sendNoteOff(notestoplay[i], 0, 1);     // Stop the note
     }
@@ -188,7 +190,6 @@ arp::arp()
     steps = 6;
     indelay = 200;
     progression = 0;
-    //mode = ionian;
     mode = ionian;
 }
  void arp::midibegin()
