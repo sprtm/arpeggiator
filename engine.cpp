@@ -158,7 +158,23 @@ void arp::play()
         delay(indelay);
         //#endif
 
-        //delay(250); // 120 bpm
+        //delay(600); // 100 bpm
+        //delay(300); // 100 bpm (eighth notes)  
+
+        //delay(522); // 115 bpm
+        //delay(261); // 115 bpm (eighth notes)    
+
+        //delay(500); // 120 bpm
+        //delay(250); // 120 bpm (eighth notes)
+
+        //delay(480); // 125 bpm
+        //delay(240); // 125 bpm (eighth notes)
+
+        //delay(462); // 130 bpm
+        //delay(231); // 130 bpm (eighth notes)    
+
+        //delay(444); // 135 bpm
+        //delay(222); // 135 bpm (eighth notes)    
 
         //#ifdef EXT_SYNC
         // Wait for click from sync in
