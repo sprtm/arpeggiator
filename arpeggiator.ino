@@ -10,19 +10,19 @@ int ButtonClicks;
 // A6 = baseNotepin       ROOT
 // A5 = baseOctavepin     TONIC      
 // A4 = octaveShiftpin    PROGR.
-// A3 = modepin           MODE     broken
+// A3 = modepin           MODE
 // A2 = indelaypin        TEMPO
 // A1 = orderpin          ORDER
 // A0 = stepspin          STEPS
 
 
-#define baseNotepin 6     // 
-#define baseOctavepin 5   // 
-#define octaveShiftpin 4  // 
-#define modepin 7         //      broken, pin 7 temp.
-#define indelaypin 2      // 
-#define orderpin 1        // 
-#define stepspin 0        //
+#define baseNotepin 6
+#define baseOctavepin 5
+#define octaveShiftpin 4
+#define modepin 3
+#define indelaypin 2
+#define orderpin 1
+#define stepspin 0
 
 #define LEDPin 5
 
