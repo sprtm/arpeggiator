@@ -4,8 +4,8 @@
 arp a(C, 5, 2, 6, 200, c_harmonic, 0);
 bool button_pressed;
 int ButtonVal;
-//int LastButtonVal;
 int ButtonClicks;
+int latchMode;
 
 // A6 = baseNotepin       ROOT
 // A5 = baseOctavepin     TONIC      
@@ -15,6 +15,8 @@ int ButtonClicks;
 // A1 = orderpin          ORDER
 // A0 = stepspin          STEPS
 
+
+#define latchPin 4
 
 #define baseNotepin 6
 #define baseOctavepin 5
@@ -34,8 +36,11 @@ void readPoties()
 {
   unsigned i;
   a.setupArp(analogRead(baseNotepin), analogRead(baseOctavepin), analogRead(octaveShiftpin), analogRead(stepspin), analogRead(indelaypin), analogRead(orderpin), analogRead(modepin));
+
+  // latch slide switch is connected to D4
+  latchMode = digitalRead(latchPin);
   
-  // In my setup the buttons are connected to pins 6..12
+  // play buttons are connected to pins D6-D12
   for (i=12;i>5;i--)
     if (!(digitalRead(i))) { 
       button_pressed = true; ButtonVal = 13-i;
@@ -78,12 +83,12 @@ void setup()
   for (unsigned i=6;i<13;i++)
   {
     pinMode(i,INPUT_PULLUP);
-    //pinMode(i, INPUT);
-    //digitalWrite(i, 1);
   }
+
+  pinMode(latchPin,INPUT_PULLUP);
+  
   button_pressed = false;
   ButtonVal = 1;
-  //LastButtonVal = 0;
   ButtonClicks = 0;
 }
 
@@ -93,10 +98,10 @@ void loop()
     {
       a.setProgression(ButtonVal-1);
 
-     if((ButtonVal == 7) && (ButtonClicks > 2)){
+     if(latchMode == LOW ){
+     //if((ButtonVal == 7) && (ButtonClicks > 2)){
          button_pressed = false;
          ButtonClicks = 0;
-         //LastButtonVal = 0;
       }
       
       digitalWrite(LEDPin, HIGH);
